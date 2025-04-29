@@ -12,7 +12,7 @@ def ul(_, message):
         path = reply.download()
         fk = upload_file(path)
         for x in fk:
-            url = "https://catbox.moe/user/api.php" + x
+            url = "https://telegra.ph" + x
 
         i.edit(f"⬤ ʏᴏᴜʀ ᴛᴇʟᴇɢʀᴀᴘʜ ᴜʀʟ ɪs ʀᴇᴀᴅʏ ʙᴀʙʏ ➥ {url}")
 
@@ -26,7 +26,7 @@ def ul(_, message):
         path = reply.download()
         fk = upload_file(path)
         for x in fk:
-            url = "https://catbox.moe/user/api.php" + x
+            url = "https://telegra.ph" + x
 
         i.edit(f"⬤ ʏᴏᴜʀ ɢʀᴀᴘʜ ᴜʀʟ ɪs ʀᴇᴀᴅʏ ʙᴀʙʏ ➥ {url}")
   
