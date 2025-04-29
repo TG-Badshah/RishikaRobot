@@ -35,7 +35,7 @@ from AvishaRobot import (
     WOLVES,
     dispatcher,
 )
-from AvishaRobot.modules.helper_funcs.chat_status import (
+from FallenRobot.modules.helper_funcs.chat_status import (
     is_user_ban_protected,
     user_admin,
 )
@@ -160,7 +160,6 @@ def new_member(update: Update, context: CallbackContext):
     new_members = update.effective_message.new_chat_members
 
     for new_mem in new_members:
-
         welcome_log = None
         res = None
         sent = None
@@ -169,7 +168,6 @@ def new_member(update: Update, context: CallbackContext):
         media_wel = False
 
         if should_welc:
-
             reply = update.message.message_id
             cleanserv = sql.clean_service(chat.id)
             # Clean service welcome
@@ -183,38 +181,38 @@ def new_member(update: Update, context: CallbackContext):
             # Give the owner a special welcome
             if new_mem.id == OWNER_ID:
                 update.effective_message.reply_text(
-                    "ᴏʜ ɢᴇɴᴏs? ʟᴇᴛs ɢᴇᴛ ᴛʜɪs ᴍᴏᴠɪɴɢ.", reply_to_message_id=reply
+                    "Oh, Genos? Let's get this moving.", reply_to_message_id=reply
                 )
                 welcome_log = (
                     f"{html.escape(chat.title)}\n"
-                    f"#ᴜsᴇʀ_ᴊᴏɪɴᴇᴅ\n"
-                    f"Bᴏᴛ Oᴡɴᴇʀ Jᴜsᴛ Jᴏɪɴᴇᴅ ᴛʜᴇ ɢʀᴏᴜᴘ"
+                    f"#USER_JOINED\n"
+                    f"Bot Owner just joined the group"
                 )
                 continue
 
             # Welcome Devs
             elif new_mem.id in DEV_USERS:
                 update.effective_message.reply_text(
-                    "Bᴇ ᴄᴏᴏʟ! A ᴍᴇᴍʙᴇʀ ᴏғ ᴛʜᴇ Hᴇʀᴏᴇs Assᴏᴄɪᴀᴛɪᴏɴ Jᴜsᴛ Jᴏɪɴᴇᴅ.",
+                    "Be cool! A member of the Heroes Association just joined.",
                     reply_to_message_id=reply,
                 )
                 welcome_log = (
                     f"{html.escape(chat.title)}\n"
-                    f"#ᴜsᴇʀ_ᴊᴏɪɴᴇᴅ\n"
-                    f"Bᴏᴛ ᴅᴇᴠ Jᴜsᴛ Jᴏɪɴᴇᴅ ᴛʜᴇ ɢʀᴏᴜᴘ"
+                    f"#USER_JOINED\n"
+                    f"Bot Dev just joined the group"
                 )
                 continue
 
             # Welcome Sudos
             elif new_mem.id in DRAGONS:
                 update.effective_message.reply_text(
-                    "Wʜᴏᴀ! A Dʀᴀɢᴏɴ ᴅɪsᴀsᴛᴇʀ Jᴜsᴛ Jᴏɪɴᴇᴅ! Sᴛᴀʏ Aʟᴇʀᴛ!",
+                    "Whoa! A Dragon disaster just joined! Stay Alert!",
                     reply_to_message_id=reply,
                 )
                 welcome_log = (
                     f"{html.escape(chat.title)}\n"
-                    f"#ᴜsᴇʀ_ᴊᴏɪɴᴇᴅ\n"
-                    f"Bᴏᴛ Sᴜᴅᴏ Jᴜsᴛ Jᴏɪɴᴇᴅ ᴛʜᴇ ɢʀᴏᴜᴘ"
+                    f"#USER_JOINED\n"
+                    f"Bot Sudo just joined the group"
                 )
                 continue
 
@@ -257,23 +255,25 @@ def new_member(update: Update, context: CallbackContext):
 
             # Welcome yourself
             elif new_mem.id == bot.id:
-                if not MukeshRobot.ALLOW_CHATS:
+                if not FallenRobot.ALLOW_CHATS:
                     with suppress(BadRequest):
                         update.effective_message.reply_text(
-                            f"ɢʀᴏᴜᴘ ᴀʀᴇ ᴅɪsᴀʙʟᴇᴅ ғᴏʀ {bot.first_name}, ɪ'ᴍ ʙᴜsʏ."
+                            f"Groups are disabled for {bot.first_name}, I'm outta here."
                         )
                     bot.leave_chat(update.effective_chat.id)
                     return
                 bot.send_message(
                     EVENT_LOGS,
-                    "❖ ʙᴏᴛ ᴀᴅᴅᴇᴅ #ɴᴇᴡ_ɢʀᴏᴜᴘ\n\n<b>● ɢʀᴏᴜᴘ ɴᴀᴍᴇ ➥</b> {}\n<b>● ᴄʜᴀᴛ ɪᴅ ➥</b> <code>{}</code> ".format(
+                    "#NEW_GROUP\n<b>Group name:</b> {}\n<b>ID:</b> <code>{}</code>\nAdded by : {} | <code>{}</code>".format(
                         html.escape(chat.title),
                         chat.id,
+                        user.first_name or "Unknown",
+                        user.id,
                     ),
                     parse_mode=ParseMode.HTML,
                 )
                 update.effective_message.reply_text(
-                    "⬤ ᴡᴇʟᴄᴏᴍᴇ ʙᴀʙʏ ♥︎", reply_to_message_id=reply
+                    "Watashi ga kita !", reply_to_message_id=reply
                 )
                 continue
 
@@ -398,12 +398,12 @@ def new_member(update: Update, context: CallbackContext):
                         )
                     new_join_mem = f'<a href="tg://user?id={user.id}">{html.escape(new_mem.first_name)}</a>'
                     message = msg.reply_text(
-                        f"{new_join_mem}, ᴄʟɪᴄᴋ ᴛʜᴇ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴘʀᴏᴠᴇ ʏᴏᴜ'ʀᴇ ʜᴜᴍᴀɴ.\n Yᴏᴜ ʜᴀᴠᴇ 𝟷𝟸𝟶 sᴇᴄᴏɴᴅs.",
+                        f"{new_join_mem}, click the button below to prove you're human.\nYou have 120 seconds.",
                         reply_markup=InlineKeyboardMarkup(
                             [
                                 {
                                     InlineKeyboardButton(
-                                        text="ʏᴇs ɪ'ᴍ ʜᴜᴍᴀɴ ",
+                                        text="Yes, I'm human.",
                                         callback_data=f"user_join_({new_mem.id})",
                                     )
                                 }
@@ -509,7 +509,6 @@ def left_member(update: Update, context: CallbackContext):
 
         left_mem = update.effective_message.left_chat_member
         if left_mem:
-
             # Dont say goodbyes to gbanned users
             if is_user_gbanned(left_mem.id):
                 return
@@ -967,7 +966,6 @@ def user_button(update: Update, context: CallbackContext):
         query.answer(text="You're not allowed to do this!")
 
 
-
 WELC_HELP_TXT = (
     "Your group's welcome/goodbye messages can be personalised in multiple ways. If you want the messages"
     " to be individually generated, like the default welcome message is, you can use *these* variables:\n"
@@ -995,12 +993,12 @@ WELC_HELP_TXT = (
 )
 
 WELC_MUTE_HELP_TXT = (
-    "ʏᴏᴜ ᴄᴀɴ ɢᴇᴛ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴍᴜᴛᴇ ɴᴇᴡ ᴘᴇᴏᴘʟᴇ ᴡʜᴏ ᴊᴏɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀɴᴅ ʜᴇɴᴄᴇ ᴘʀᴇᴠᴇɴᴛ sᴘᴀᴍʙᴏᴛs ғʀᴏᴍ ғʟᴏᴏᴅɪɴɢ ʏᴏᴜʀ ɢʀᴏᴜᴘ. "
-    "ᴛʜᴇ ғᴏʟʟᴏᴡɪɴɢ ᴏᴘᴛɪᴏɴs ᴀʀᴇ ᴘᴏssɪʙʟᴇ:\n"
-    "• `/welcomemute  sᴏғᴛ`*:* ʀᴇsᴛʀɪᴄᴛs ɴᴇᴡ ᴍᴇᴍʙᴇʀs ғʀᴏᴍ sᴇɴᴅɪɴɢ ᴍᴇᴅɪᴀ ғᴏʀ 24 ʜᴏᴜʀs.\n"
-    "• `/welcomemute  sᴛʀᴏɴɢ`*:* ᴍᴜᴛᴇs ɴᴇᴡ ᴍᴇᴍʙᴇʀs ᴛɪʟʟ ᴛʜᴇʏ ᴛᴀᴘ ᴏɴ ᴀ ʙᴜᴛᴛᴏɴ ᴛʜᴇʀᴇʙʏ ᴠᴇʀɪғʏɪɴɢ ᴛʜᴇʏ'ʀᴇ ʜᴜᴍᴀɴ.\n"
-    "• `/welcomemute  ᴏғғ`*:* ᴛᴜʀɴs ᴏғғ ᴡᴇʟᴄᴏᴍᴇᴍᴜᴛᴇ.\n"
-    "*ɴᴏᴛᴇ:* sᴛʀᴏɴɢ ᴍᴏᴅᴇ ᴋɪᴄᴋs ᴀ ᴜsᴇʀ ғʀᴏᴍ ᴛʜᴇ ᴄʜᴀᴛ ɪғ ᴛʜᴇʏ ᴅᴏɴᴛ ᴠᴇʀɪғʏ ɪɴ 120sᴇᴄᴏɴᴅs. ᴛʜᴇʏ ᴄᴀɴ ᴀʟᴡᴀʏs ʀᴇᴊᴏɪɴ ᴛʜᴏᴜɢʜ"
+    "You can get the bot to mute new people who join your group and hence prevent spambots from flooding your group. "
+    "The following options are possible:\n"
+    "• `/welcomemute soft`*:* restricts new members from sending media for 24 hours.\n"
+    "• `/welcomemute strong`*:* mutes new members till they tap on a button thereby verifying they're human.\n"
+    "• `/welcomemute off`*:* turns off welcomemute.\n"
+    "*Note:* Strong mode kicks a user from the chat if they dont verify in 120seconds. They can always rejoin though"
 )
 
 
@@ -1042,19 +1040,23 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
+*Admins only:*
+ ❍ /welcome <on/off>*:* enable/disable welcome messages.
+ ❍ /welcome*:* shows current welcome settings.
+ ❍ /welcome noformat*:* shows current welcome settings, without the formatting - useful to recycle your welcome messages!
+ ❍ /goodbye*:* same usage and args as `/welcome`.
+ ❍ /setwelcome <sometext>*:* set a custom welcome message. If used replying to media, uses that media.
+ ❍ /setgoodbye <sometext>*:* set a custom goodbye message. If used replying to media, uses that media.
+ ❍ /resetwelcome*:* reset to the default welcome message.
+ ❍ /resetgoodbye*:* reset to the default goodbye message.
+ ❍ /cleanwelcome <on/off>*:* On new member, try to delete the previous welcome message to avoid spamming the chat.
+ ❍ /welcomemutehelp*:* gives information about welcome mutes.
+ ❍ /cleanservice <on/off*:* deletes telegrams welcome/left service messages. 
+ *Example:*
+user joined chat, user left chat.
 
- ⬤ /welcome <on/off>* ➛* ᴇɴᴀʙʟᴇ/ᴅɪsᴀʙʟᴇ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs.
- ⬤ /welcome *➥* sʜᴏᴡs ᴄᴜʀʀᴇɴᴛ ᴡᴇʟᴄᴏᴍᴇ sᴇᴛᴛɪɴɢs.
- ⬤ /welcome ɴᴏ ғᴏʀᴍᴀᴛ* ➥* sʜᴏᴡs ᴄᴜʀʀᴇɴᴛ ᴡᴇʟᴄᴏᴍᴇ sᴇᴛᴛɪɴɢs, ᴡɪᴛʜᴏᴜᴛ ᴛʜᴇ ғᴏʀᴍᴀᴛᴛɪɴɢ - ᴜsᴇғᴜʟ ᴛᴏ ʀᴇᴄʏᴄʟᴇ ʏᴏᴜʀ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs!
- ⬤ /goodbye *➥* sᴀᴍᴇ ᴜsᴀɢᴇ ᴀɴᴅ ᴀʀɢs ᴀs `/welcome`.
- ⬤ /setwelcome <sᴏᴍᴇᴛᴇxᴛ>* ➥* sᴇᴛ ᴀ ᴄᴜsᴛᴏᴍ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇ. ɪғ ᴜsᴇᴅ ʀᴇᴘʟʏɪɴɢ ᴛᴏ ᴍᴇᴅɪᴀ, ᴜsᴇs ᴛʜᴀᴛ ᴍᴇᴅɪᴀ.
- ⬤ /setgoodbye <sᴏᴍᴇᴛᴇxᴛ>* ➥* sᴇᴛ ᴀ ᴄᴜsᴛᴏᴍ ɢᴏᴏᴅʙʏᴇ ᴍᴇssᴀɢᴇ. ɪғ ᴜsᴇᴅ ʀᴇᴘʟʏɪɴɢ ᴛᴏ ᴍᴇᴅɪᴀ, ᴜsᴇs ᴛʜᴀᴛ ᴍᴇᴅɪᴀ.
- ⬤ /resetwelcome *➥* ʀᴇsᴇᴛ ᴛᴏ ᴛʜᴇ ᴅᴇғᴀᴜʟᴛ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇ.
- ⬤ /resetgoodbye *➥* ʀᴇsᴇᴛ ᴛᴏ ᴛʜᴇ ᴅᴇғᴀᴜʟᴛ ɢᴏᴏᴅʙʏᴇ ᴍᴇssᴀɢᴇ.
- ⬤ /cleanwelcome <on/off>* ➥* ᴏɴ ɴᴇᴡ ᴍᴇᴍʙᴇʀ, ᴛʀʏ ᴛᴏ ᴅᴇʟᴇᴛᴇ ᴛʜᴇ ᴘʀᴇᴠɪᴏᴜs ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇ ᴛᴏ ᴀᴠᴏɪᴅ sᴘᴀᴍᴍɪɴɢ ᴛʜᴇ ᴄʜᴀᴛ.
- ⬤ /welcomemutehelp *➥* ɢɪᴠᴇs ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ᴡᴇʟᴄᴏᴍᴇ ᴍᴜᴛᴇs.
- ⬤ /cleanservice <on/off* ➥* ᴅᴇʟᴇᴛᴇs ᴛᴇʟᴇɢʀᴀᴍs ᴡᴇʟᴄᴏᴍᴇ/ʟᴇғᴛ sᴇʀᴠɪᴄᴇ ᴍᴇssᴀɢᴇs. 
- ⬤ /welcomehelp *➥* ᴠɪᴇᴡ ᴍᴏʀᴇ ғᴏʀᴍᴀᴛᴛɪɴɢ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ғᴏʀ ᴄᴜsᴛᴏᴍ ᴡᴇʟᴄᴏᴍᴇ/ɢᴏᴏᴅʙʏᴇ ᴍᴇssᴀɢᴇs.
+*Welcome markdown:* 
+ ❍ /welcomehelp*:* view more formatting information for custom welcome/goodbye messages.
 """
 
 NEW_MEM_HANDLER = MessageHandler(
@@ -1074,7 +1076,7 @@ SET_WELCOME = CommandHandler(
 )
 SET_GOODBYE = CommandHandler(
     "setgoodbye", set_goodbye, filters=Filters.chat_type.groups, run_async=True
-  )
+)
 RESET_WELCOME = CommandHandler(
     "resetwelcome", reset_welcome, filters=Filters.chat_type.groups, run_async=True
 )
@@ -1111,7 +1113,7 @@ dispatcher.add_handler(CLEAN_SERVICE_HANDLER)
 dispatcher.add_handler(BUTTON_VERIFY_HANDLER)
 dispatcher.add_handler(WELCOME_MUTE_HELP)
 
-__mod_name__ = "ᴡᴇʟᴄᴏᴍᴇ"
+__mod_name__ = "Wᴇʟᴄᴏᴍᴇ"
 __command_list__ = []
 __handlers__ = [
     NEW_MEM_HANDLER,
