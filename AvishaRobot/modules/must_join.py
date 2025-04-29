@@ -9,7 +9,7 @@ MUST_JOIN = "The_incricible"
 #------------------------
 
 NYKAA = [
-    "https://graph.org/file/0c1e92bb565834519e962.jpg",
+    "https://files.catbox.moe/hmgiaq.jpg",
 ]
 
 async def check_user_join_channel(user_id):
