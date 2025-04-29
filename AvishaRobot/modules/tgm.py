@@ -4,7 +4,7 @@ from AvishaRobot import pbot as app
 from pyrogram.types import InputMediaPhoto
 
 
-@app.on_message(filters.command(["tgm"]))
+@app.on_message(filters.command(["mmmtgm"]))
 def ul(_, message):
     reply = message.reply_to_message
     if reply.media:
@@ -18,7 +18,7 @@ def ul(_, message):
 
 ##############
 
-@app.on_message(filters.command(["graph"]))
+@app.on_message(filters.command(["mmgraph"]))
 def ul(_, message):
     reply = message.reply_to_message
     if reply.media:
