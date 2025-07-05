@@ -64,11 +64,11 @@ RUN apt update && apt upgrade -y && \
 # Pypi package Repo upgrade
 RUN pip3 install --upgrade pip setuptools
 
-RUN git clone https://github.com/tinaarobot/AvishaRobot /root/AvishaRobot
-WORKDIR /root/AvishaRobot
+RUN git clone https://github.com/tinaarobot/RishikaRobot /root/RishikaRobot
+WORKDIR /root/RishikaRobot
 
-#Copy config file to /root/AvishaRobot/AvishaRobot
-COPY ./AvishaRobot/config.py ./AvishaRobot/config.py* /root/AvishaRobot/AvishaRobot/
+#Copy config file to /root/RishikaRobot/RishikaRobot
+COPY ./RishikaRobot/config.py ./RishikaRobot/config.py* /root/RishikaRobot/RishikaRobot/
 
 ENV PATH="/home/bot/bin:$PATH"
 
@@ -76,4 +76,4 @@ ENV PATH="/home/bot/bin:$PATH"
 RUN pip3 install -U -r requirements.txt
 
 # Starting Worker
-CMD ["python3","-m","AvishaRobot"]
+CMD ["python3","-m","RishikaRobot"]

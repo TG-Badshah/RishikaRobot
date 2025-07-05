@@ -2,5 +2,5 @@ build:
   docker:
     worker: Dockerfile
 run:
-  worker: python3 -m AvishaRobot 
+  worker: python3 -m RishikaRobot 
   
